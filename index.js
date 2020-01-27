@@ -10,6 +10,19 @@ app.post('/add_device', function (req, res) {
    //READ Request Handlers
    let id = req.body.id;
    let data = req.body.data;
+   if(!id){
+       return res.status(400).send({
+//         success: 'false',
+         message: 'id field is required',
+       });
+   }
+   if(!data){
+       return res.status(400).send({
+//         success: 'false',
+         message: 'data field is required',
+       });
+   }
+
    console.log('user id '+id);
    console.log('user data '+data);
    io.sockets.emit('message', ''+data);
