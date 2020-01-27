@@ -8,7 +8,7 @@ app.get('/',function(req,res){
     res.sendFile(__dirname+'/index.html');
 })
 
-app.post('/add_device', function (req, res) {
+app.post('/change_pin_status', function (req, res) {
    // First read existing users.
    //READ Request Handlers
    let chip_id = req.body.chip_id;
