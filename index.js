@@ -1,6 +1,9 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/',function(req,res){
     res.sendFile(__dirname+'/index.html');
 })
@@ -8,25 +11,39 @@ app.get('/',function(req,res){
 app.post('/add_device', function (req, res) {
    // First read existing users.
    //READ Request Handlers
-   let id = req.body.id;
-   let data = req.body.data;
-   if(!id){
+   let chip_id = req.body.chip_id;
+   let pin_num = req.body.pin_num;
+   let pin_status = req.body.pin_status;
+   if(!chip_id){
        return res.status(400).send({
 //         success: 'false',
          message: 'id field is required',
        });
    }
-   if(!data){
+   if(!pin_num){
        return res.status(400).send({
 //         success: 'false',
-         message: 'data field is required',
+         message: 'pin_num field is required',
+       });
+   }
+   if(!pin_status){
+       return res.status(400).send({
+//         success: 'false',
+         message: 'pin_status field is required',
        });
    }
 
-   console.log('user id '+id);
-   console.log('user data '+data);
-   io.sockets.emit('message', ''+data);
-//   io.sockets.emit('hi', 'everyone');
+   console.log('user id '+chip_id);
+   console.log('user pin_num '+pin_num);
+   console.log('user pin_status '+pin_status);
+
+   const data = {
+     chip_id: chip_id,
+     pin_num: pin_num,
+     pin_status: pin_status
+   }
+
+   io.sockets.emit('message', data);
    res.send('Device added successfully.');
 })
 
