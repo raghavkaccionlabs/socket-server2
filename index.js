@@ -8,6 +8,12 @@ app.get('/',function(req,res){
 app.post('/add_device', function (req, res) {
    // First read existing users.
    //READ Request Handlers
+   let id = req.body.id;
+   let data = req.body.data;
+   console.log('user id '+id);
+   console.log('user data '+data);
+   io.sockets.emit('message', ''+data);
+//   io.sockets.emit('hi', 'everyone');
    res.send('Device added successfully.');
 })
 
